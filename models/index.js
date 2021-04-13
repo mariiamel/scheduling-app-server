@@ -1,7 +1,6 @@
-// require mongoose package
 const mongoose = require('mongoose')
 
-// mongoose config
+
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/scheduling'
 
 mongoose.connect(MONGO_URI, {
@@ -21,3 +20,6 @@ db.once('open', () => {
 db.on('error', err => {
   console.error(`something has gone wrong with the DB!\n ${err}`)
 })
+
+
+

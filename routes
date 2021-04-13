@@ -1,0 +1,15 @@
+GET /  -- Homepage
+
+GET /users/register  --- Display sign up page
+PUT /users/register  --- Create new user & redirect to profile
+POST /users/login
+
+GET /users/:userId/profile   --- Display profile page
+PUT /users/:userId/profile   --- Edit user profile
+Delete /users/:userId/profile  --- Delete user profile
+
+GET /users/:userId/appointments  --- Display all appointments
+POST /users/:userId/appointments  --- Create new appointment
+
+GET /users/:userId/appointments/:appointmentId  --- Display users appointments
+DELETE /users/:userId/appointments/:appointmentId --- Delete users appointment & redirect to all appointments

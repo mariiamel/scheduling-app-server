@@ -1,4 +1,5 @@
 //require packages
+// const passport = require('passport')
 const express = require('express')
 const rowdy = require('rowdy-logger')
 const morgan = require('morgan')
@@ -16,6 +17,8 @@ app.use(morgan('tiny'))
 app.use(cors())
 // request body parser
 app.use(express.urlencoded({ extended: false }))
+app.use(express.json()) 
+// app.use(passport.initialize())
 
 
 const middleware = (req, res, next) => {
@@ -29,7 +32,9 @@ app.get('/', middleware, (req, res) => {
 })
 
 //controllers
-
+// app.use('/auth', require('./controllers/authController'))
+app.use('/users', require('./controllers/UserController'))
+app.use('/users', require('./controllers/AppointmentsController'))
 
 
 //tell express to listen for PORT
