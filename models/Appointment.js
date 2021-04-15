@@ -4,13 +4,13 @@ let appointmentSchema = new mongoose.Schema({
 	date: {
 		type: String
 	},
-	start:{
-		type: String
-	},
-	end: {
+	time:{
 		type: String
 	},
 	title:{
+		type: String
+	},
+	service: {
 		type: String
 	},
 	barber:{

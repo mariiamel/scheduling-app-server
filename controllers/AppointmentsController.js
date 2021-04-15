@@ -22,9 +22,9 @@ router.post('/:userId/appointments', async (req, res) => {
         if(user){
             const newAppointment = await Appointment.create({
                 date: req.body.date,
-                start: req.body.start,
-                end: req.body.end,
-                title: req.body.title
+                time: req.body.time,
+                title: req.body.title,
+                service: req.body.service
             })
             user.appointments.push(newAppointment)
             await user.save()
@@ -32,7 +32,6 @@ router.post('/:userId/appointments', async (req, res) => {
         }
     } catch(err) {
         console.log(err)
-
     }
 })
 
