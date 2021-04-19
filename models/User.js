@@ -1,4 +1,15 @@
 const mongoose = require('mongoose')
+const Appointment = require('./Appointment')
+
+let availabilitySchema = new mongoose.Schema({
+	monday: [],
+	tuesday: [],
+	wednesday: [],
+	thursday: [],
+	friday: [],
+	saturday: [],
+	sunday: []
+})
 
 const UserSchema = new mongoose.Schema({
     userName: {
@@ -27,26 +38,25 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: false,
     },
-    barber: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Barber',
-    },
     isClient: {
         type: Boolean,
         required: true,
         default: false,
-    },
-    client: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Client',
     },
     appointments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Appointment',
         required: false
     }],
+    favBarbers:[{
+        name: String
+    }],
+    availability: availabilitySchema
 }, {
     timestamps: true
 })
 
-module.exports = User = mongoose.model('user', UserSchema)
+const User = mongoose.model('user', UserSchema)
+const Availability = mongoose.model('availability', availabilitySchema)
+
+module.exports = { User, Availability }

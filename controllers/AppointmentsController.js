@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const User = require('../models/User.js')
+const { User, Availability } = require('../models/User.js')
 const Appointment = require('../models/Appointment.js')
 const authLockedRoute = require('./authLockedRoute.js')
 
@@ -10,6 +10,7 @@ router.get('/:userId/appointments', async (req, res) => {
         console.log(id)
         const user = await User.findById(id).populate('appointments')
         res.json(user.appointments)
+        console.log(user)
     } catch(err) {
         console.log(err)
     }
@@ -23,7 +24,6 @@ router.post('/:userId/appointments', async (req, res) => {
             const newAppointment = await Appointment.create({
                 date: req.body.date,
                 time: req.body.time,
-                title: req.body.title,
                 service: req.body.service
             })
             user.appointments.push(newAppointment)

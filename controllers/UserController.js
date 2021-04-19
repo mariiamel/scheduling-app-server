@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const User = require('../models/User.js')
+const { User, Availability } = require('../models/User.js')
 const Appointment = require('../models/Appointment.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -25,6 +25,16 @@ router.post('/register', async (req, res) =>{
         const saltRounds = 12
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
+        const createAvail = await Availability.create({
+            monday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            tuesday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            wednesday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            thursday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            friday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            saturday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00'],
+            sunday: ['09:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00' , '5:00']
+        })
+
         const newUser = new User({
             username: req.body.username, 
             email: req.body.email, 
@@ -33,7 +43,10 @@ router.post('/register', async (req, res) =>{
             lastName: req.body.lastName,
             phone: req.body.phone,
             img: req.body.img,
-            appointments: req.body.appointments
+            appointments: req.body.appointments,
+            isBarber: req.body.isBarber,
+            isClient: req.body.isClient,
+            availability: createAvail
         })
         await newUser.save()
 
@@ -45,7 +58,10 @@ router.post('/register', async (req, res) =>{
             lastName: newUser.lastName,
             phone: newUser.phone,
             img: newUser.img,
-            appointments: newUser.appointments
+            appointments: newUser.appointments,
+            isBarber: newUser.isBarber,
+            isClient: newUser.isClient,
+            availability: newUser.availability
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 60 * 60})
@@ -128,5 +144,24 @@ router.delete('/:userId/profile', authLockedRoute, async (req, res) =>{
         console.log(err)
     }
 })
+
+router.post('/:userId/favorite', async (req, res) => {
+    try{
+        const barber = req.params.favorite
+        const foundUser = await User.findById(req.params.userId)
+        foundUser.favBarbers.push({name: barber})
+        const updatedUser = foundUser.save()
+        res.status(200).json({updatedUser})
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+router.get('/:userId/favorites', async (req, res) => {
+    const foundUser = await User.findById(req.params.userId)
+    res.json(foundUser.favBarbers)
+})
+
 
 module.exports = router

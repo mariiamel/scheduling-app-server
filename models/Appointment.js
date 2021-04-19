@@ -7,20 +7,17 @@ let appointmentSchema = new mongoose.Schema({
 	time:{
 		type: String
 	},
-	title:{
-		type: String
-	},
 	service: {
 		type: String
 	},
-	barber:{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Client'
-	},
-	client:{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Barber'
-	}
+	barber: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+	client: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }
 })
 
 module.exports = Appointment = mongoose.model('Appointment', appointmentSchema)
